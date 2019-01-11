@@ -1,38 +1,42 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
 """
-
 @author: kia
+@edited for kashanu ac: mrunderline
 """
 
 from selenium import webdriver
+from selenium.webdriver.support.ui import Select
 import time
-url = 'http://scores.iau-mahabad.ac.ir/loginb.aspx'
-driver = webdriver.Chrome('/home/kia/Downloads/chromedriver')
+
+driver = webdriver.Chrome('./chromedriver')
 driver.maximize_window()
-driver.get(url)
-driver.find_element_by_id('txtUserName').send_keys("USERNAME")
-driver.find_element_by_id('txtPassword').send_keys("PASSWORD ")
-driver.find_element_by_xpath(".//input[@type='submit' and @name='btn_ent_stu']").click()
-time.sleep(3)
-print("LOGIN")
-for master in range(0,3):
-	print("Master:"+str(master+1))
-	for qu in range(0,12):
-		element = driver.find_element_by_xpath('//*[@id="ContentPlaceHolder1_dataListTotalkarnameh_teacherassessment_stu_riz_'+str(master)+'_GRD_Questions_'+str(master)+'_Drp_Answer_'+str(qu)+'"]')
-		for option in element.find_elements_by_tag_name("option"):
-			status = "هميشه"
-			status2 = "بسیار خوب"
-			status = status.decode('utf-8')
-			status2 = status2.decode('utf-8')
-			if option.text == status:
-				option.click()
-				print(str("Question"+str(qu+1)))
-				break
-			if qu == 11:
-				if option.text == status2:
-					option.click()
-					print(str("Question"+str(qu+1)))
-					break
-print(">>>>>>>> I AM PROGRAMMER <<<<<<<")
-print(">>>>>>>>>>> KIA HAMEDI <<<<<<<<<")
+
+def get_teachers():
+	driver.get('https://pooya.kashanu.ac.ir/nazar/stu_portal/SelectLessons.php')
+	return driver.find_elements_by_tag_name("tr")
+
+def login():
+	url = 'https://pooya.kashanu.ac.ir/gateway/PuyaAuthenticate.php'
+	driver.get(url)
+	driver.find_element_by_id('UserID').send_keys("USERNAME HERE!")
+	driver.find_element_by_id('DummyVar').send_keys("PASSWORD HERE!")
+	driver.find_element_by_xpath(".//input[@type='submit']").click()
+	print("loged in")
+
+login()
+teachers_count = len(get_teachers())
+verify = 2
+
+while verify < teachers_count:
+	teachers = get_teachers()
+	teachers[verify].click()
+
+	for select in driver.find_elements_by_tag_name('select'):
+		select = Select(select)
+		select.select_by_value('20')
+	driver.find_element_by_id("FSubmit").click()
+	driver.switch_to_alert().accept()
+	print 'teacher {} verified!'.format(verify)
+	verify += 1
+
+print 'finished! all teachers verified!'
+print '>>> by: @mrunderline <<<'
