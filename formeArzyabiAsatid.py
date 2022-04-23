@@ -5,6 +5,7 @@
 
 from cmath import log
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import Select
 import time
@@ -15,12 +16,17 @@ userName = os.getenv("USER")
 password = os.getenv("PASSWORD")
 salary = os.getenv("SALARY")
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--window-size=1920,1080')
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--disable-gpu')
-driver = webdriver.Chrome(chrome_options=chrome_options)
+# Chrome options
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_prefs = {}
+chrome_options.experimental_options["prefs"] = chrome_prefs
+chrome_prefs["profile.default_content_settings"] = {"images": 2}
+
+# Chrome driver
+driver = webdriver.Chrome(options=chrome_options)
 driver.maximize_window()
 
 def get_teachers():
@@ -48,8 +54,8 @@ while verify < teachers_count:
 		select.select_by_value(salary)
 	driver.find_element_by_id("FSubmit").click()
 	driver.switch_to_alert().accept()
-	print 'teacher {} verified!'.format(verify)
+	print ('teacher {} verified!'.format(verify))
 	verify += 1
 
-print 'finished! all teachers verified!'
-print '>>> by: @mrunderline <<<'
+print('finished! all teachers verified!')
+print('>>> by: @mrunderline <<<')
