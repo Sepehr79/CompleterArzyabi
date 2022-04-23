@@ -1,18 +1,21 @@
 """
 @author: kia
-@edited for kashanu ac: mrunderline
+@edited for kashanu ac: mrunderline, Sepehr79
 """
 
+from cmath import log
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support.ui import Select
 import time
 import os
 
+# Get environment variable values
 userName = os.getenv("USER")
 password = os.getenv("PASSWORD")
 salary = os.getenv("SALARY")
 
-driver = webdriver.Chrome('./chromedriver')
+driver = webdriver.Remote("http://127.0.0.1:4444/wd/hub", DesiredCapabilities.CHROME)
 driver.maximize_window()
 
 def get_teachers():
@@ -22,7 +25,7 @@ def get_teachers():
 def login():
 	url = 'https://pooya.kashanu.ac.ir/gateway/PuyaAuthenticate.php'
 	driver.get(url)
-	driver.find_element_by_id('UserID').send_keys(userName)
+	driver.find_element_by_id('UserID').send_keys(userName) 
 	driver.find_element_by_id('DummyVar').send_keys(password)
 	driver.find_element_by_xpath(".//input[@type='submit']").click()
 	print("loged in")
