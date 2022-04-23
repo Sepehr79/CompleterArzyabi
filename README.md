@@ -7,7 +7,4 @@
 
 # Run with docker
 
-1. First run chrome driver on your machine
-    `docker run -d -p 4444:4444 selenium/standalone-chrome`
-2. Now place your properties and enjoy!
-    `docker run -it -e USER=(your username) -e PASSWORD=(your password) -e SALARY=(نمره استاد) analyze_ostad`
+`docker run -it -e USER=(your username) -e PASSWORD=(your password) -e SALARY=(نمره استاد) analyze_ostad`
