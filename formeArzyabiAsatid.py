@@ -6,6 +6,8 @@
 import configparser
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
 
 parser = configparser.ConfigParser()
 parser.read("properties.ini")
@@ -15,7 +17,8 @@ password = parser.get("SETTINGS", "password")
 ostad_score = parser.get("SETTINGS", "ostad_score")
 
 # Chrome driver
-driver = webdriver.Chrome('./chromedriver.exe')
+service = ChromeService(executable_path=ChromeDriverManager().install())
+driver = webdriver.Chrome(service=service)
 driver.maximize_window()
 
 def get_teachers():

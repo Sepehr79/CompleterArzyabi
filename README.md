@@ -7,5 +7,6 @@
 
 ### How to use
 
-1. Set your username and password in the `properties.ini` file
-2. Execute `python .\formeArzyabiAsatid.py`
+1. `pip install selenium`
+2. Set your username and password in the `properties.ini` file
+3. Execute `python .\formeArzyabiAsatid.py`
